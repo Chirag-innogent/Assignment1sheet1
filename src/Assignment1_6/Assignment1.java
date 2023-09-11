@@ -5,6 +5,7 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Assignment1 {
     public static void main(String[] args) {
@@ -21,19 +22,16 @@ public class Assignment1 {
         Services services= new Services();
         //Question 1
         List<Student> students1 = services.findByPincode(students,452002,addresses);
-        for(Student s:students1){
-            System.out.println(s);
-        }
+        students1.stream().forEach(System.out::println);
         System.out.println("-----------------");
 
         //Question2
         List<Student> studentList= services.findByCity(students,"Indore",addresses);
-        for(Student s:studentList){
-            System.out.println(s);
-        }
-        System.out.println("-----------------");
+        studentList.stream().forEach(System.out::println);
+        System.out.println("*************************");
         //Question3
-        services.reportCard(studentList);
+        services.reportCard(students);
+        System.out.println("----------Sorted-------");
         //Question4
         List<Student> studentPassed= services.listOfStudentPassed(students);
         System.out.println(studentPassed);
@@ -44,9 +42,35 @@ public class Assignment1 {
         List<Student>  studentInSeccion= services.findStudentByClass(students,classes,"A");
         System.out.println("section"+studentInSeccion);
         //Question8
+        System.out.println("Question 8");
         List<Student> studentFailByAge= services.failByAge(students);
         System.out.println(studentFailByAge);
         //Question 9
+    /*    int studentId=1;
+         Student student1 = studentList.stream().filter(e -> e.getId() == studentId).findFirst().get();
+        List<Address>addressList = addresses.stream().filter(address -> address.getStudentId()==studentId).collect(Collectors.toList());
+        students.remove(student1);
+        addresses.removeAll(addressList);
+*/
+        //Question 10
+        if(students.isEmpty())
+            students=null;
+        if(addresses.isEmpty())
+            addresses=null;
+
+        //Question11
+        System.out.println("Question 11");
+        List<Student> femaleStudentsPage1To9 = services.pagenation(students,1,9,"F");
+        femaleStudentsPage1To9.stream().forEach(System.out::println);
+        System.out.println("-------------------------");
+
+        services.pagenation(students,7,8,"F").forEach(System.out::println);
+        System.out.println("-------------------------");
+        List<Student> list1=services.pagenation(students,1,5,"F");
+        services.orderByMarks(list1).forEach(System.out::println);
+        System.out.println("-------------------------");
+        List<Student> list2 = services.pagenation(students, 9, 50, "F");
+        services.orderByMarks(list2).forEach(System.out::println);
 
     }
     static List<Student> uploadStudent(String filePath){
